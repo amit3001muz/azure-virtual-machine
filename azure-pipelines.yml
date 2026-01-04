@@ -1,18 +1,21 @@
 trigger: none
 
-pool: Dar_se_jitna hai
+pool: delhi-agent-pool
 
 steps:
+
 - task: TerraformTask@5
-  inputs:
+  inputs: 
     provider: 'azurerm'
     command: 'init'
-    backendServiceArm: 'azure-sp-conn'
-    backendAzureRmResourceGroupName: 'Delhi_Air_Quality'
-    backendAzureRmStorageAccountName: 'delhi43'
-    backendAzureRmContainerName: 'dwarka'
-    backendAzureRmKey: 'vmtfstate'
-  displayName: backend set kiya hai 
+    backendServiceArm: 'delhi-sc'
+    backendAzureRmResourceGroupName: 'amit-delhi'
+    backendAzureRmStorageAccountName: 'amitdelhi1'
+    backendAzureRmContainerName: 'amitdelhi1con'
+    backendAzureRmKey: 'tfstate'
+  displayName: terraform init   
+
+
 - task: TerraformTask@5
   inputs:
     provider: 'azurerm'
@@ -23,12 +26,22 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'plan'
-    environmentServiceNameAzureRM: 'azure-sp-conn'
-  displayName: terraform plan
+    environmentServiceNameAzureRM: 'delhi-sc'
+  displayName: terraform plan 
+
 
 - task: TerraformTask@5
   inputs:
     provider: 'azurerm'
     command: 'apply'
-  displayName: terraform apply
-  
+    environmentServiceNameAzureRM: 'delhi-sc'
+  displayName: terraform apply 
+- task: TerraformTask@5
+  inputs:
+    provider: 'azurerm'
+    command: 'show'
+    outputTo: 'console'
+    outputFormat: 'default'
+    environmentServiceNameAzureRM: 'delhi-sc'
+  displayName: terraform show   
+    
